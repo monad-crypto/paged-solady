@@ -8,6 +8,9 @@ import {LibBit} from "./LibBit.sol";
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibBitmap.sol)
 /// @author Modified from Solmate (https://github.com/transmissions11/solmate/blob/main/src/utils/LibBitmap.sol)
 /// @author Modified from Solidity-Bits (https://github.com/estarriolvetch/solidity-bits/blob/main/contracts/BitMaps.sol)
+/// @dev NOTE: The storage layout is not compatible with Solady's LibMap. Do not swap this into
+///   an upgradeable contract that already has data: old values will be read from the wrong
+///   places. Use a new storage slot or migrate the data.
 library LibBitmap {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                         CONSTANTS                          */

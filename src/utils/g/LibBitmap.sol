@@ -8,10 +8,7 @@ pragma solidity ^0.8.13;
 /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
 /// @dev A bitmap in storage
-/// @dev _ptr serves as phantom data to provide a storage slot for the
-/// @dev bitmap. A page aligned slot is used to store the bitmap at
-/// @dev `keccak256(bitmap.slot) & not(0x7f)` and the bitmap is stored
-/// @dev serially in 256-bit buckets starting from that slot.
+/// @dev _ptr serves as a virtual pointer for the struct
 struct Bitmap {
     uint256 _ptr;
 }
@@ -25,6 +22,9 @@ import {LibBit} from "../LibBit.sol";
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/g/LibBitmap.sol)
 /// @author Modified from Solmate (https://github.com/transmissions11/solmate/blob/main/src/utils/LibBitmap.sol)
 /// @author Modified from Solidity-Bits (https://github.com/estarriolvetch/solidity-bits/blob/main/contracts/BitMaps.sol)
+/// @dev NOTE: The storage layout is not compatible with Solady's LibMap. Do not swap this into
+///   an upgradeable contract that already has data: old values will be read from the wrong
+///   places. Use a new storage slot or migrate the data.
 library LibBitmap {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                         CONSTANTS                          */
