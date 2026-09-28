@@ -2,7 +2,11 @@
 pragma solidity ^0.8.4;
 
 /// @notice Library for storage of packed unsigned integers.
+/// @author QEDK (@qedk)
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibMap.sol)
+/// @dev NOTE: The storage layout is not compatible with Solady's LibMap. Do not swap this into
+///   an upgradeable contract that already has data: old values will be read from the wrong
+///   places. Use a new storage slot or migrate the data.
 library LibMap {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                          STRUCTS                           */
