@@ -51,7 +51,11 @@ using LibMap for Uint64Map global;
 using LibMap for Uint128Map global;
 
 /// @notice Library for storage of packed unsigned integers.
+/// @author QEDK (@qedk)
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/g/LibMap.sol)
+/// @dev NOTE: The storage layout is not compatible with Solady's LibBitmap. Do not swap this into
+///   an upgradeable contract that already has data: old values will be read from the wrong
+///   places. Use a new storage slot or migrate the data.
 library LibMap {
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
     /*                     GETTERS / SETTERS                      */
