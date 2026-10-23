@@ -24,9 +24,9 @@ library LibBitmap {
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
     /// @dev A bitmap in storage
-    /// @dev _ptr serves as a virtual pointer for the struct
+    /// @dev _spacer is a phantom data marker to represent the struct
     struct Bitmap {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
@@ -131,7 +131,9 @@ library LibBitmap {
                         mstore(0x00, add(mload(0x00), 1)) // add 1 to start
                         base := and(keccak256(0x00, 0x40), not(0x7f)) // new base aligned to another page
                     }
-                    if eq(n, 1) { break } // all elements added
+                    if eq(n, 1) {
+                        break
+                    } // all elements added
                     sstore(add(base, bucket), max)
                     n := sub(n, 1)
                 }
@@ -163,7 +165,9 @@ library LibBitmap {
                         mstore(0x00, add(mload(0x00), 1)) // add 1 to start
                         base := and(keccak256(0x00, 0x40), not(0x7f)) // new base aligned to another page
                     }
-                    if eq(n, 1) { break } // all elements added
+                    if eq(n, 1) {
+                        break
+                    } // all elements added
                     sstore(add(base, bucket), 0)
                     n := sub(n, 1)
                 }
@@ -256,7 +260,9 @@ library LibBitmap {
                     }
                     bucket := sub(bucket, 1)
                     bits := sload(add(base, bucket))
-                    if or(bits, iszero(or(bucket, page))) { break }
+                    if or(bits, iszero(or(bucket, page))) {
+                        break
+                    }
                 }
             }
         }
@@ -299,7 +305,9 @@ library LibBitmap {
                         base := and(keccak256(0x00, 0x40), not(0x7f)) // recalculate base for new page
                     }
                     negBits := not(sload(add(base, bucket)))
-                    if or(negBits, gt(add(shl(7, page), bucket), lastWord)) { break }
+                    if or(negBits, gt(add(shl(7, page), bucket), lastWord)) {
+                        break
+                    }
                 }
                 if gt(add(shl(7, page), bucket), lastWord) {
                     negBits := shl(and(0xff, not(upTo)), shr(and(0xff, not(upTo)), negBits))
