@@ -13,39 +13,39 @@ library LibMap {
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
     /// @dev A uint8 map in storage.
-    /// @dev _ptr is a virtual pointer to represent the struct in storage
+    /// @dev _spacer is a phantom data marker to represent the struct
     struct Uint8Map {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /// @dev A uint16 map in storage.
-    /// @dev _ptr is a virtual pointer to represent the struct in storage
+    /// @dev _spacer is a phantom data marker to represent the struct
     struct Uint16Map {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /// @dev A uint32 map in storage.
-    /// @dev _ptr is a virtual pointer to represent the struct in storage
+    /// @dev _spacer is a phantom data marker to represent the struct
     struct Uint32Map {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /// @dev A uint40 map in storage. Useful for storing timestamps up to 34841 A.D.
-    /// @dev _ptr is a virtual pointer to represent the struct in storage
+    /// @dev _spacer is a phantom data marker to represent the struct
     struct Uint40Map {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /// @dev A uint64 map in storage.
-    /// @dev _ptr is a virtual pointer to represent the struct in storage
+    /// @dev _spacer is a virtual pointer to represent the struct in storage
     struct Uint64Map {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /// @dev A uint128 map in storage.
-    /// @dev _ptr is a virtual pointer to represent the struct in storage
+    /// @dev _spacer is a phantom data marker to represent the struct
     struct Uint128Map {
-        uint256 _ptr;
+        uint256 _spacer;
     }
 
     /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
@@ -53,7 +53,10 @@ library LibMap {
     /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
     /// @dev Returns the uint8 value at `index` in `map`.
-    function get(Uint8Map storage map, uint256 index) internal view returns (uint8 result) {
+    function get(
+        Uint8Map storage map,
+        uint256 index
+    ) internal view returns (uint8 result) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, shr(12, index))
@@ -79,7 +82,10 @@ library LibMap {
     }
 
     /// @dev Returns the uint16 value at `index` in `map`.
-    function get(Uint16Map storage map, uint256 index) internal view returns (uint16 result) {
+    function get(
+        Uint16Map storage map,
+        uint256 index
+    ) internal view returns (uint16 result) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, shr(11, index))
@@ -106,7 +112,10 @@ library LibMap {
     }
 
     /// @dev Returns the uint32 value at `index` in `map`.
-    function get(Uint32Map storage map, uint256 index) internal view returns (uint32 result) {
+    function get(
+        Uint32Map storage map,
+        uint256 index
+    ) internal view returns (uint32 result) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, shr(10, index))
@@ -133,14 +142,20 @@ library LibMap {
     }
 
     /// @dev Returns the uint40 value at `index` in `map`.
-    function get(Uint40Map storage map, uint256 index) internal view returns (uint40 result) {
+    function get(
+        Uint40Map storage map,
+        uint256 index
+    ) internal view returns (uint40 result) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, div(index, 768)) // 768 = floor(256 / 40) * 128
             mstore(0x20, map.slot)
             let base := and(keccak256(0x00, 0x40), not(0x7f))
             let bucket := add(base, mod(div(index, 6), 128)) // Storage bucket.
-            result := and(shr(mul(40, mod(index, 6)), sload(bucket)), 0xffffffffff)
+            result := and(
+                shr(mul(40, mod(index, 6)), sload(bucket)),
+                0xffffffffff
+            )
         }
     }
 
@@ -160,14 +175,20 @@ library LibMap {
     }
 
     /// @dev Returns the uint64 value at `index` in `map`.
-    function get(Uint64Map storage map, uint256 index) internal view returns (uint64 result) {
+    function get(
+        Uint64Map storage map,
+        uint256 index
+    ) internal view returns (uint64 result) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, shr(9, index))
             mstore(0x20, map.slot)
             let base := and(keccak256(0x00, 0x40), not(0x7f))
             let bucket := add(base, and(shr(2, index), 0x7f)) // Storage bucket.
-            result := and(shr(shl(6, and(index, 3)), sload(bucket)), 0xffffffffffffffff)
+            result := and(
+                shr(shl(6, and(index, 3)), sload(bucket)),
+                0xffffffffffffffff
+            )
         }
     }
 
@@ -187,7 +208,10 @@ library LibMap {
     }
 
     /// @dev Returns the uint128 value at `index` in `map`.
-    function get(Uint128Map storage map, uint256 index) internal view returns (uint128 result) {
+    function get(
+        Uint128Map storage map,
+        uint256 index
+    ) internal view returns (uint128 result) {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, shr(8, index))
@@ -200,7 +224,11 @@ library LibMap {
     }
 
     /// @dev Updates the uint128 value at `index` in `map`.
-    function set(Uint128Map storage map, uint256 index, uint128 value) internal {
+    function set(
+        Uint128Map storage map,
+        uint256 index,
+        uint128 value
+    ) internal {
         /// @solidity memory-safe-assembly
         assembly {
             mstore(0x00, shr(8, index))
@@ -215,11 +243,11 @@ library LibMap {
     }
 
     /// @dev Returns the value at `index` in `map`.
-    function get(mapping(uint256 => uint256) storage map, uint256 index, uint256 bitWidth)
-        internal
-        view
-        returns (uint256 result)
-    {
+    function get(
+        mapping(uint256 => uint256) storage map,
+        uint256 index,
+        uint256 bitWidth
+    ) internal view returns (uint256 result) {
         /// @solidity memory-safe-assembly
         assembly {
             let d := div(256, bitWidth)
@@ -264,11 +292,12 @@ library LibMap {
     // An invalid search range will simply return `(found = false, index = start)`.
 
     /// @dev Returns whether `map` contains `needle`, and the index of `needle`.
-    function searchSorted(Uint8Map storage map, uint8 needle, uint256 start, uint256 end)
-        internal
-        view
-        returns (bool found, uint256 index)
-    {
+    function searchSorted(
+        Uint8Map storage map,
+        uint8 needle,
+        uint256 start,
+        uint256 end
+    ) internal view returns (bool found, uint256 index) {
         uint256 slot;
         /// @solidity memory-safe-assembly
         assembly {
@@ -278,11 +307,12 @@ library LibMap {
     }
 
     /// @dev Returns whether `map` contains `needle`, and the index of `needle`.
-    function searchSorted(Uint16Map storage map, uint16 needle, uint256 start, uint256 end)
-        internal
-        view
-        returns (bool found, uint256 index)
-    {
+    function searchSorted(
+        Uint16Map storage map,
+        uint16 needle,
+        uint256 start,
+        uint256 end
+    ) internal view returns (bool found, uint256 index) {
         uint256 slot;
         /// @solidity memory-safe-assembly
         assembly {
@@ -292,11 +322,12 @@ library LibMap {
     }
 
     /// @dev Returns whether `map` contains `needle`, and the index of `needle`.
-    function searchSorted(Uint32Map storage map, uint32 needle, uint256 start, uint256 end)
-        internal
-        view
-        returns (bool found, uint256 index)
-    {
+    function searchSorted(
+        Uint32Map storage map,
+        uint32 needle,
+        uint256 start,
+        uint256 end
+    ) internal view returns (bool found, uint256 index) {
         uint256 slot;
         /// @solidity memory-safe-assembly
         assembly {
@@ -306,11 +337,12 @@ library LibMap {
     }
 
     /// @dev Returns whether `map` contains `needle`, and the index of `needle`.
-    function searchSorted(Uint40Map storage map, uint40 needle, uint256 start, uint256 end)
-        internal
-        view
-        returns (bool found, uint256 index)
-    {
+    function searchSorted(
+        Uint40Map storage map,
+        uint40 needle,
+        uint256 start,
+        uint256 end
+    ) internal view returns (bool found, uint256 index) {
         uint256 slot;
         /// @solidity memory-safe-assembly
         assembly {
@@ -320,11 +352,12 @@ library LibMap {
     }
 
     /// @dev Returns whether `map` contains `needle`, and the index of `needle`.
-    function searchSorted(Uint64Map storage map, uint64 needle, uint256 start, uint256 end)
-        internal
-        view
-        returns (bool found, uint256 index)
-    {
+    function searchSorted(
+        Uint64Map storage map,
+        uint64 needle,
+        uint256 start,
+        uint256 end
+    ) internal view returns (bool found, uint256 index) {
         uint256 slot;
         /// @solidity memory-safe-assembly
         assembly {
@@ -334,11 +367,12 @@ library LibMap {
     }
 
     /// @dev Returns whether `map` contains `needle`, and the index of `needle`.
-    function searchSorted(Uint128Map storage map, uint128 needle, uint256 start, uint256 end)
-        internal
-        view
-        returns (bool found, uint256 index)
-    {
+    function searchSorted(
+        Uint128Map storage map,
+        uint128 needle,
+        uint256 start,
+        uint256 end
+    ) internal view returns (bool found, uint256 index) {
         uint256 slot;
         /// @solidity memory-safe-assembly
         assembly {
