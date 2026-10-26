@@ -8,39 +8,39 @@ pragma solidity ^0.8.13;
 /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
 /// @dev A uint8 map in storage.
-/// @dev _ptr is a virtual pointer to represent the struct in storage
+/// @dev _spacer is a phantom data marker to represent the struct
 struct Uint8Map {
-    uint256 _ptr;
+    uint256 _spacer;
 }
 
 /// @dev A uint16 map in storage.
-/// @dev _ptr is a virtual pointer to represent the struct in storage
+/// @dev _spacer is a phantom data marker to represent the struct
 struct Uint16Map {
-    uint256 _ptr;
+    uint256 _spacer;
 }
 
 /// @dev A uint32 map in storage.
-/// @dev _ptr is a virtual pointer to represent the struct in storage
+/// @dev _spacer is a phantom data marker to represent the struct
 struct Uint32Map {
-    uint256 _ptr;
+    uint256 _spacer;
 }
 
 /// @dev A uint40 map in storage. Useful for storing timestamps up to 34841 A.D.
-/// @dev _ptr is a virtual pointer to represent the struct in storage
+/// @dev _spacer is a phantom data marker to represent the struct
 struct Uint40Map {
-    uint256 _ptr;
+    uint256 _spacer;
 }
 
 /// @dev A uint64 map in storage.
-/// @dev _ptr is a virtual pointer to represent the struct in storage
+/// @dev _spacer is a virtual pointer to represent the struct in storage
 struct Uint64Map {
-    uint256 _ptr;
+    uint256 _spacer;
 }
 
 /// @dev A uint128 map in storage.
-/// @dev _ptr is a virtual pointer to represent the struct in storage
+/// @dev _spacer is a phantom data marker to represent the struct
 struct Uint128Map {
-    uint256 _ptr;
+    uint256 _spacer;
 }
 
 using LibMap for Uint8Map global;
